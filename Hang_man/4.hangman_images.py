@@ -2,35 +2,8 @@ import string
 from words import choose_word
 from images import IMAGES
 
-
-
 # End of helper code
 # -----------------------------------
-def invalid_input(user_input):
-    if len(user_input)>1:
-        return False
-    if not user_input.isalpha():
-        return False
-
-    # True humne tab hi return kiya hai jab
-    # user_input ki length 1 hai aur woh character hai
-    return True
-
-
-
-def get_hint(secret_word,letters_guessed):
-    from random import choice
-
-    letter_not_guessed=[]
-
-    for index in secret_word:
-        if index not in letters_guessed:
-            if index not in letter_not_guessed:
-                letter_not_guessed.append(index)
-    return choice(letter_not_guessed)
-
-
-
 
 def is_word_guessed(secret_word, letters_guessed):
     '''
@@ -39,8 +12,6 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: return True kare agar saare letters jo ki user ne guess kiye hai wo secret_word mai hai, warna no
       False otherwise
     '''
-    if secret_word==get_guessed_word(secret_word,letters_guessed):
-        return True
     
     return False
 
@@ -75,9 +46,6 @@ def get_available_letters(letters_guessed,secret_word):
     '''
     import string
     letters_left = string.ascii_lowercase
-    for i in letters_guessed:
-        if i in secret_word:
-            letters_left=letters_left.replace(i,"")
 
     return letters_left
 
@@ -101,45 +69,18 @@ def hangman(secret_word):
 
     '''
 
-    print ("Welcome to the game, Hangman!\n")   
-
+    print ("Welcome to the game, Hangman!")
     print ("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
     print ("")
 
-    total_lives=remaining_lives=8
-    graphical_images=[0,1,2,3,4,5,6,7]
-    
-    level=input("Which stage of level you want to play :- \n\t*Easy \n\t*Medium \n\t*Hard\n\nChose your options...........  ")
-    if level=="Easy":
-        total_lives=remaining_lives=8
-        graphical_images=[0,1,2,3,4,5,6,7]
-    elif level=="Medium":
-        total_lives=remaining_lives=6
-        graphical_images=[1,3,4,5,6,7]
-    elif level=="Hard":
-        total_lives=remaining_lives=4
-        graphical_images=[1,3,5,7]
-    else:
-        print("Oops your choice is wrong so game is start with Basic Level\n")
-
-        
     letters_guessed = []
+    remaining_lives=8
     while remaining_lives>0:
         available_letters = get_available_letters(letters_guessed,secret_word)
         print ("Available letters: " + available_letters)
 
-
-
         guess = input("Please guess a letter: ")
         letter = guess.lower()
-
-        if letter=="hint":
-            print("you hint is :-" +get_hint(secret_word,letters_guessed))
-
-        if (not invalid_input(letter)) and letter!="hint":
-            print ("invalid input")   
-            continue
-        
 
         if letter in secret_word:
             letters_guessed.append(letter)
@@ -149,14 +90,13 @@ def hangman(secret_word):
             if is_word_guessed(secret_word, letters_guessed) == True:
                 print (" * * Congratulations, you won! * * ")
                 print ("")
-                break
 
         else:
             print ("Oops! That letter is not in my word: " + get_guessed_word(secret_word, letters_guessed))
+            letters_guessed.append(letter)
             print ("")
-            print (IMAGES[graphical_images[total_lives-remaining_lives]])
+            print (IMAGES[8-remaining_lives])
             remaining_lives-=1
-    print ("sorry you lose the game, the word was - "+secret_word)
 
 # Load the list of words into the variable wordlist
 # So that it can be accessed from anywhere in the program

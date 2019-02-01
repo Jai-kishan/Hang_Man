@@ -5,7 +5,10 @@ def load_words():
     """
     Ye function kaafi jayada words ko load karne mai help karega
     """
-    word_list = ["navgurukul", "learning", "kindness"]
+    with open("words.txt", "r") as lots_of_word:
+        read_file=lots_of_word.read()
+        word_list=str.split(read_file)
+
     return word_list
 
 def choose_word():

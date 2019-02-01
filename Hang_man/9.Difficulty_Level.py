@@ -2,10 +2,9 @@ import string
 from words import choose_word
 from images import IMAGES
 
-
-
 # End of helper code
 # -----------------------------------
+
 def invalid_input(user_input):
     if len(user_input)>1:
         return False
@@ -19,7 +18,7 @@ def invalid_input(user_input):
 
 
 def get_hint(secret_word,letters_guessed):
-    from random import choice
+    import random
 
     letter_not_guessed=[]
 
@@ -27,8 +26,7 @@ def get_hint(secret_word,letters_guessed):
         if index not in letters_guessed:
             if index not in letter_not_guessed:
                 letter_not_guessed.append(index)
-    return choice(letter_not_guessed)
-
+    return random.choice(letter_not_guessed)
 
 
 
@@ -156,7 +154,8 @@ def hangman(secret_word):
             print ("")
             print (IMAGES[graphical_images[total_lives-remaining_lives]])
             remaining_lives-=1
-    print ("sorry you lose the game, the word was - "+secret_word)
+    else:
+        print ("sorry you lose the game, the word was - "+secret_word)
 
 # Load the list of words into the variable wordlist
 # So that it can be accessed from anywhere in the program
